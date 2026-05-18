@@ -23,7 +23,7 @@ export default function MobileNav({ pathname, userInfo }) {
 
   const authLink = userInfo
     ? { href: "/profile", label: "Profile", icon: BiUserCircle }
-    : { href: "/login", label: "Sign In", icon: IoLogInOutline };
+    : { href: "/signin", label: "Sign In", icon: IoLogInOutline };
 
   const links = [...mobileLinks, authLink];
 

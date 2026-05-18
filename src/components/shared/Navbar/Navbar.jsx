@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   BiUserCircle,
@@ -14,13 +14,15 @@ import {
 import { IoLogInOutline } from "react-icons/io5";
 import LogoMark from "../../ui/LogoMark";
 import MobileNav from "./MobileNav";
+import { authClient } from "@/lib/auth-client";
+import { Bounce, toast } from "react-toastify";
 // import {  } from "react-icons/lu";
 
 /* ─── auth hook placeholder ─── */
-const useMockAuth = () => ({
-  isPending: false,
-  userInfo: null,
-});
+// const useMockAuth = () => ({
+//   isPending: false,
+//   userInfo: null,
+// });
 
 const mainLinks = [
   { href: "/", label: "Home", icon: BiHome },
@@ -48,14 +50,17 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
+  // login sesion  info
+  const { data: session, isPending } = authClient.useSession();
+  const userInfo = session?.user;
+
   useEffect(() => {
-    setMounted(true);
+    // setMounted(true);
     const onScroll = () => setScrolled(window.scrollY > 25);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const { isPending, userInfo } = useMockAuth();
   const isActive = (href) => pathname === href;
 
   return (
@@ -121,10 +126,7 @@ export default function Navbar() {
 
             {/* ── Auth area (hidden on xs, visible sm+) ── */}
             <div className="hidden sm:flex items-center gap-3">
-              {!mounted ? (
-                /* hydration placeholder — prevents layout shift */
-                <div className="w-26" />
-              ) : isPending ? (
+              {isPending ? (
                 <div className="flex items-center gap-2">
                   <Spinner />
                   <span className="text-[13px] font-medium text-[#90AB8B]">
@@ -142,6 +144,21 @@ export default function Navbar() {
                   </Link>
 
                   <button
+                    onClick={async () => {
+                      await authClient.signOut();
+                      toast.success("SignOut Successfully", {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                        transition: Bounce,
+                      });
+                      redirect("/");
+                    }}
                     className="
                       px-3.5 py-1.5 rounded-[7px] text-[13px] font-medium tracking-wide
                       border border-[rgba(239,68,68,0.45)] text-[#fca5a5] bg-transparent
