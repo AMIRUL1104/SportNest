@@ -12,7 +12,7 @@ import {
   BiGrid,
 } from "react-icons/bi";
 import { IoLogInOutline } from "react-icons/io5";
-import LogoMark from "./LogoMark";
+import LogoMark from "../../ui/LogoMark";
 import MobileNav from "./MobileNav";
 // import {  } from "react-icons/lu";
 
@@ -155,7 +155,7 @@ export default function Navbar() {
               ) : (
                 /* ── Logged-out state ── */
                 <Link
-                  href="/login"
+                  href="/signin"
                   className="
                     flex items-center gap-1.5 px-4 py-1.75 rounded-lg no-underline
                     bg-[#5A7863] hover:bg-[#4d6b56] text-[#EBF4DD]
