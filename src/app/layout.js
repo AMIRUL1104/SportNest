@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import Footer from "@/components/shared/Footer/Footer";
+import { ToastContainer } from "react-toastify";
 
 const inter = Inter({
   variable: "--font-inter-sans",
@@ -20,6 +21,8 @@ export default function RootLayout({ children }) {
         <Navbar />
         {children}
         <Footer />
+
+        <ToastContainer />
       </body>
     </html>
   );

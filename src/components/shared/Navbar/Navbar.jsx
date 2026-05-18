@@ -64,7 +64,7 @@ export default function Navbar() {
       <header
         className={[
           /* position & stack */
-          "fixed top-0 left-0 right-0 z-50",
+          "sticky top-0 left-0 right-0 z-50",
           /* glassmorphism */
           "bg-[rgba(59,73,83,0.72)] backdrop-blur-xl saturate-150",
           "border-b border-[rgba(144,171,139,0.18)]",
