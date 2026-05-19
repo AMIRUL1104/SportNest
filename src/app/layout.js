@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/shared/Navbar/Navbar";
 import Footer from "@/components/shared/Footer/Footer";
 import { ToastContainer } from "react-toastify";
+import Provides from "@/lib/providers";
 
 const inter = Inter({
   variable: "--font-inter-sans",
@@ -18,9 +19,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable}  h-full antialiased`}>
       <body className="min-h-full flex flex-col">
-        <Navbar />
-        {children}
-        <Footer />
+        <Provides>
+          <Navbar />
+          {children}
+          <Footer />
+        </Provides>
 
         <ToastContainer />
       </body>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { redirect, usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   BiUserCircle,
   BiHome,
@@ -16,6 +16,7 @@ import LogoMark from "../../ui/LogoMark";
 import MobileNav from "./MobileNav";
 import { authClient } from "@/lib/auth-client";
 import { Bounce, toast } from "react-toastify";
+import { UserInfoContext } from "@/context/UserInfoContext";
 // import {  } from "react-icons/lu";
 
 /* ─── auth hook placeholder ─── */
@@ -50,9 +51,7 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // login sesion  info
-  const { data: session, isPending } = authClient.useSession();
-  const userInfo = session?.user;
+  const { userInfo, isPending } = useContext(UserInfoContext);
 
   useEffect(() => {
     // setMounted(true);

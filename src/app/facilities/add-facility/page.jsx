@@ -9,7 +9,7 @@
 
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { Form, Fieldset } from "@heroui/react";
 import {
@@ -26,6 +26,7 @@ import {
   BiImage,
 } from "react-icons/bi";
 import Image from "next/image";
+import { UserInfoContext } from "@/context/UserInfoContext";
 // import { LuLoader2 } from "react-icons/lu";
 
 /* ─────────────────────────────────────────
@@ -143,8 +144,8 @@ export default function AddFacilityPage() {
   // const [imagePreview, setImagePreview] = useState("");
   const [slotsError, setSlotsError] = useState("");
 
-  /* replace with actual logged-in user email */
-  const ownerEmail = "owner@sportnest.com";
+  const { userInfo } = useContext(UserInfoContext);
+  const ownerEmail = userInfo.email;
 
   const {
     register,
