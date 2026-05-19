@@ -5,9 +5,6 @@ import { revalidatePath } from "next/cache";
 
 export async function AddFacility(formData) {
   "use server";
-
-  //   const data = Object.fromEntries(formData.entries());
-
   let result;
 
   try {
@@ -26,138 +23,70 @@ export async function AddFacility(formData) {
 
   // try-catch এর বাইরে redirect
   if (result.insertedId) {
-    // toast.success("facility added successfully!");
     redirect("/facilities/manage-my-facilities");
   }
 
   return result;
 }
 
-// export async function Updatedestination(id, formData) {
-//   "use server";
-//   const UpdatedData = Object.fromEntries(formData.entries());
+export async function DeleteFacility(facilityId) {
+  "use server";
 
-//   console.log(UpdatedData);
+  try {
+    if (!facilityId) {
+      return { error: "Facility ID is required", deletedCount: 0 };
+    }
 
-//   const req = await fetch(`http://localhost:4000/destination/${id}`, {
-//     method: "PATCH",
-//     headers: {
-//       "Content-type": "application/json",
-//     },
-//     body: JSON.stringify(UpdatedData),
-//   });
+    const res = await fetch(`http://localhost:4000/facilities/${facilityId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-//   const res = await req.json();
-//   console.log("after update ", res);
+    if (!res.ok) {
+      return {
+        error: `Failed to delete destination: ${res.statusText}`,
+        deletedCount: 0,
+      };
+    }
 
-//   if (res.modifiedCount > 0) {
-//     redirect(`/destinations/${id}`);
-//   }
+    const result = await res.json();
+    if (result.deletedCount > 0) {
+      revalidatePath("/facilities/manage-my-facilities");
+      toast("Facility deleted successfully!");
+    }
 
-//   return res;
-// }
+    return {
+      ...result,
+      deletedCount: result.deletedCount || 0,
+    };
+  } catch (error) {
+    console.error("Delete error:", error);
+    return { error: "Something went wrong while deleting!", deletedCount: 0 };
+  }
+}
 
-// export async function Deletedestination(destinationId) {
-//   "use server";
+export async function UpdateFacility(id, formData) {
+  "use server";
+  const UpdatedData = Object.fromEntries(formData.entries());
 
-//   try {
-//     if (!destinationId) {
-//       return { error: "Destination ID is required", deletedCount: 0 };
-//     }
+  // console.log(UpdatedData);
 
-//     const res = await fetch(
-//       `http://localhost:4000/destination/${destinationId}`,
-//       {
-//         method: "DELETE",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       },
-//     );
+  const req = await fetch(`http://localhost:4000/facilities/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify(UpdatedData),
+  });
 
-//     if (!res.ok) {
-//       return {
-//         error: `Failed to delete destination: ${res.statusText}`,
-//         deletedCount: 0,
-//       };
-//     }
+  const res = await req.json();
+  // console.log("after update ", res);
 
-//     const result = await res.json();
+  if (res.modifiedCount > 0) {
+    redirect(`/facilities/${id}`);
+  }
 
-//     return {
-//       ...result,
-//       deletedCount: result.deletedCount || 0,
-//     };
-//   } catch (error) {
-//     console.error("Delete error:", error);
-//     return { error: "Something went wrong while deleting!", deletedCount: 0 };
-//   }
-// }
-
-// export async function AddBooking(bookingData) {
-//   "use server";
-
-//   // console.log("Booking data received in server action:", bookingData);
-
-//   let result;
-
-//   try {
-//     const response = await fetch("http://localhost:4000/booking", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(bookingData),
-//     });
-
-//     result = await response.json();
-//   } catch (error) {
-//     return { error: "Something went wrong!" };
-//   }
-
-//   // try-catch এর বাইরে redirect
-//   if (result.insertedId) {
-//     redirect("/my-booking");
-//   }
-
-//   return result;
-// }
-
-// export async function DeleteBooking(bookingId) {
-//   "use server";
-
-//   try {
-//     if (!bookingId) {
-//       return { error: "Booking ID is required", deletedCount: 0 };
-//     }
-
-//     const res = await fetch(`http://localhost:4000/booking/${bookingId}`, {
-//       method: "DELETE",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     });
-
-//     if (!res.ok) {
-//       return {
-//         error: `Failed to delete booking: ${res.statusText}`,
-//         deletedCount: 0,
-//       };
-//     }
-
-//     const result = await res.json();
-//     if (result.deletedCount > 0) {
-//       revalidatePath("/my-booking");
-//     }
-
-//     console.log("delete : ", result);
-
-//     return {
-//       ...result,
-//       deletedCount: result.deletedCount || 0,
-//     };
-//   } catch (error) {
-//     console.error("Delete error:", error);
-//     return { error: "Something went wrong while deleting!", deletedCount: 0 };
-//   }
-// }
+  return res;
+}
