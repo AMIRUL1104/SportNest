@@ -4,6 +4,9 @@ import FacilityCard from "@/components/shared/FacilityCard/FacilityCard";
 import { useState, useMemo, useTransition } from "react";
 // import FacilityCard from "@/components/FacilityCard";
 import { BiSearch, BiChevronDown, BiX, BiBuildings } from "react-icons/bi";
+import EmptyState from "./EmptyState";
+import FilterPill from "./FilterPill";
+import SkeletonGrid from "./SkeletonGrid";
 
 /* ─────────────────────────────────────────
    Constants
@@ -172,7 +175,7 @@ export default function FacilitiesClient({ facilities = [] }) {
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((facility) => (
             <FacilityCard
-              key={facility._id ?? facility.id}
+              key={facility._id}
               facility={facility}
               variant="browse"
             />
@@ -180,98 +183,6 @@ export default function FacilitiesClient({ facilities = [] }) {
         </div>
       ) : (
         <EmptyState hasFilters={hasFilters} onClear={clearFilters} />
-      )}
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────
-   Filter pill
-───────────────────────────────────────── */
-function FilterPill({ label, onRemove }) {
-  return (
-    <span className="flex items-center gap-1.5 rounded-full border border-[rgba(90,120,99,0.3)] bg-[rgba(90,120,99,0.1)] px-2.5 py-1 text-[11.5px] font-medium text-[#5A7863]">
-      {label}
-      <button
-        onClick={onRemove}
-        className="text-[#90AB8B] transition-colors hover:text-[#5A7863]"
-        aria-label="Remove filter"
-      >
-        <BiX className="text-[13px]" />
-      </button>
-    </span>
-  );
-}
-
-/* ─────────────────────────────────────────
-   Skeleton grid
-───────────────────────────────────────── */
-function SkeletonGrid() {
-  return (
-    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {Array.from({ length: 6 }).map((_, i) => (
-        <div
-          key={i}
-          className="flex flex-col overflow-hidden rounded-2xl border border-[rgba(144,171,139,0.18)] bg-white/70 shadow-[0_2px_12px_rgba(59,73,83,0.06)]"
-        >
-          {/* image skeleton */}
-          <div className="h-48 w-full animate-pulse bg-[rgba(144,171,139,0.18)]" />
-          <div className="flex flex-col gap-3 p-4">
-            {/* title */}
-            <div className="h-4 w-3/4 animate-pulse rounded-lg bg-[rgba(144,171,139,0.2)]" />
-            {/* location */}
-            <div className="h-3 w-1/2 animate-pulse rounded-lg bg-[rgba(144,171,139,0.15)]" />
-            {/* stats */}
-            <div className="flex gap-3">
-              <div className="h-3 w-20 animate-pulse rounded-lg bg-[rgba(144,171,139,0.15)]" />
-              <div className="h-3 w-16 animate-pulse rounded-lg bg-[rgba(144,171,139,0.15)]" />
-            </div>
-            {/* price + button */}
-            <div className="mt-2 flex items-center justify-between border-t border-[rgba(144,171,139,0.1)] pt-3">
-              <div className="h-5 w-20 animate-pulse rounded-lg bg-[rgba(144,171,139,0.2)]" />
-              <div className="h-8 w-24 animate-pulse rounded-xl bg-[rgba(90,120,99,0.15)]" />
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────
-   Empty state
-───────────────────────────────────────── */
-function EmptyState({ hasFilters, onClear }) {
-  return (
-    <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-[rgba(144,171,139,0.35)] bg-white/50 py-20 text-center">
-      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[rgba(144,171,139,0.15)]">
-        <BiBuildings className="text-[32px] text-[rgba(144,171,139,0.6)]" />
-      </div>
-
-      <h3 className="mb-1.5 text-[16px] font-semibold text-[#3B4953]">
-        {hasFilters ? "No facilities found" : "No facilities yet"}
-      </h3>
-
-      <p className="mb-5 max-w-[280px] text-[13px] leading-relaxed text-[rgba(59,73,83,0.5)]">
-        {hasFilters
-          ? "Try adjusting your search or filter — or clear them to see all available facilities."
-          : "Facilities will appear here once they are added to the platform."}
-      </p>
-
-      {hasFilters && (
-        <button
-          onClick={onClear}
-          className="
-            flex items-center gap-1.5 rounded-xl border
-            border-[rgba(144,171,139,0.4)] bg-white px-5 py-2.5
-            text-[13px] font-medium text-[#3B4953]
-            transition-all duration-200
-            hover:border-[#5A7863] hover:bg-[rgba(235,244,221,0.7)]
-          "
-        >
-          <BiX className="text-[15px]" />
-          Clear filters
-        </button>
       )}
     </div>
   );
