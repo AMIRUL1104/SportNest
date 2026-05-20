@@ -33,10 +33,3 @@ export default function AddFacilityPage() {
     </div>
   );
 }
-
-/* live image preview */
-// const watchedImageUrl = watch("imageUrl");
-
-// const handleImageBlur = () => {
-//   setImagePreview(watch("imageUrl") || "");
-// };

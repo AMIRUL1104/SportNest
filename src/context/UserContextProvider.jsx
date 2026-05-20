@@ -1,5 +1,4 @@
 "use client";
-
 import { authClient } from "@/lib/auth-client";
 import { UserInfoContext } from "./UserInfoContext";
 
