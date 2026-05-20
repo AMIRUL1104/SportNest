@@ -31,3 +31,21 @@ export async function getFacilityById(id) {
   const res = await req.json();
   return res;
 }
+
+export async function getLimitedFacilities() {
+  try {
+    const response = await fetch("http://localhost:4000/facilities/limited");
+
+    // রেসপন্স ঠিকঠাক না থাকলে এরর থ্রো করবে
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    // JSON থেকে জাভাস্ক্রিপ্ট অবজেক্ট/অ্যারেতে কনভার্ট করে রিটার্ন করবে
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch limited facilities:", error);
+    return []; // এরর হলে সেফটি হিসেবে খালি অ্যারে রিটার্ন করবে যাতে ফ্রন্টএন্ড ক্র্যাশ না করে
+  }
+}
