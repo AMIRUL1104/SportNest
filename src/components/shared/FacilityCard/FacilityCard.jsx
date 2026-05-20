@@ -1,6 +1,5 @@
 "use client";
 
-import { Spinner } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -13,6 +12,7 @@ import {
   BiCalendarCheck,
   BiStar,
 } from "react-icons/bi";
+import DeleteFacilityButton from "./DeleteFacility";
 
 /* ─────────────────────────────────────────
    Type badge color map
@@ -32,9 +32,8 @@ const TYPE_COLORS = {
 export default function FacilityCard({
   facility,
   variant = "browse", // "featured" | "browse" | "manage"
-  onDelete,
+  DeleteFacility,
 }) {
-  const [deleting, setDeleting] = useState(false);
   const [imgError, setImgError] = useState(false);
 
   const {
@@ -48,16 +47,6 @@ export default function FacilityCard({
     bookingCount = 0,
     rating,
   } = facility;
-
-  const handleDelete = async () => {
-    if (!onDelete) return;
-    setDeleting(true);
-    try {
-      await onDelete(id);
-    } finally {
-      setDeleting(false);
-    }
-  };
 
   const badgeColor = TYPE_COLORS[type] ?? "bg-[rgba(59,73,83,0.85)]";
 
@@ -216,29 +205,7 @@ export default function FacilityCard({
                 <BiEdit className="text-[13px]" />
                 Update
               </Link>
-
-              <button
-                onClick={handleDelete}
-                disabled={deleting}
-                className="
-                  flex items-center gap-1 px-3 py-1.5 rounded-lg
-                  border border-[rgba(239,68,68,0.35)] bg-transparent
-                  text-red-400 text-[12px] font-medium
-                  hover:bg-red-50 hover:border-[rgba(239,68,68,0.65)]
-                  disabled:opacity-50 disabled:cursor-not-allowed
-                  transition-all duration-200
-                "
-              >
-                {deleting ? (
-                  <div className="flex flex-col items-center gap-2">
-                    <Spinner size="xs" />
-                    {/* <span className="text-xs text-muted">Extra Large</span> */}
-                  </div>
-                ) : (
-                  <BiTrash className="text-[13px]" />
-                )}
-                {deleting ? "…" : "Delete"}
-              </button>
+              <DeleteFacilityButton id={_id} DeleteFacility={DeleteFacility} />
             </div>
           )}
         </div>

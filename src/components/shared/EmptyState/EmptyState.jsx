@@ -66,7 +66,7 @@ export default function EmptyState({
 
       {config.showCTA && (
         <Link
-          href="/manage/facilities/add"
+          href="/facilities/add-facility"
           className="
             flex items-center gap-2 rounded-xl bg-[#5A7863] px-6 py-2.5
             text-[13.5px] font-semibold text-[#EBF4DD] no-underline

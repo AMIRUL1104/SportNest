@@ -52,9 +52,11 @@ export async function DeleteFacility(facilityId) {
     }
 
     const result = await res.json();
+    console.log(result);
+
     if (result.deletedCount > 0) {
       revalidatePath("/facilities/manage-my-facilities");
-      toast("Facility deleted successfully!");
+      // toast("Facility deleted successfully!");
     }
 
     return {

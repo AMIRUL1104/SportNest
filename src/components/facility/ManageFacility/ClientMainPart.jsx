@@ -14,6 +14,7 @@ function ClientMainPart({
   startTrans,
   isPending,
   ownerEmail,
+  DeleteFacility,
 }) {
   const [facilities, setFacilities] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -52,10 +53,6 @@ function ClientMainPart({
   };
 
   /* wire up your delete logic here */
-  const handleDelete = async (id) => {
-    console.log("🗑️ delete →", id);
-    // await deleteFacility(id)
-  };
 
   // ডাটা লোড হওয়ার সময় স্কেলিটন দেখাবে
   if (loading) {
@@ -100,7 +97,7 @@ function ClientMainPart({
               key={facility._id ?? facility.id}
               facility={facility}
               variant="manage"
-              onDelete={handleDelete}
+              DeleteFacility={DeleteFacility}
             />
           ))}
         </div>

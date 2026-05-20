@@ -9,15 +9,13 @@ import { UserInfoContext } from "@/context/UserInfoContext";
    MANAGE FACILITIES CLIENT  — Client Island
    Manage Facilities page
 ═══════════════════════════════════════════ */
-export default function ManageFacilitiesClient() {
+export default function ManageFacilitiesClient({ DeleteFacility }) {
   const { userInfo } = useContext(UserInfoContext);
   const [search, setSearch] = useState("");
   const [typeFilter, setType] = useState("");
   const [isPending, startTrans] = useTransition();
-  // console.log(userInfo);
 
   const ownerEmail = userInfo.email;
-  // console.log(ownerEmail);
 
   const handleSetType = (val) => startTrans(() => setType(val));
 
@@ -40,6 +38,7 @@ export default function ManageFacilitiesClient() {
         startTrans={startTrans}
         isPending={isPending}
         ownerEmail={ownerEmail}
+        DeleteFacility={DeleteFacility}
       />
     </div>
   );

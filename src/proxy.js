@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import { auth } from "./lib/auth";
 
 export const config = {
-  matcher: ["/my-bookings", "/profile"],
+  matcher: ["/my-bookings", "/profile", "/facilities/:path*"],
 };
 
 export async function proxy(request) {

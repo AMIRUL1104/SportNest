@@ -2,8 +2,8 @@ import Link from "next/link";
 import { BiPlus } from "react-icons/bi";
 import ManageFacilitiesClient from "@/components/facility/ManageFacility/ManageFacilitiesClient";
 
-import StatCard from "@/components/facility/ManageFacility/StatCard";
 import StatsSummary from "@/components/facility/ManageFacility/StatsSummary";
+import { DeleteFacility } from "@/lib/backend/facilities/action";
 
 export const metadata = {
   title: "Manage Facilities — SportNest",
@@ -33,7 +33,7 @@ export default function ManageFacilitiesPage() {
             </p>
           </div>
           <Link
-            href="/manage/facilities/add"
+            href="/facilities/add-facility"
             className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#5A7863] px-5 py-2.5 text-[13.5px] font-semibold text-[#EBF4DD] no-underline shrink-0 self-start sm:w-auto shadow-[0_2px_12px_rgba(90,120,99,0.28)] transition-all duration-200 hover:bg-[#4d6b56] active:scale-[0.98]"
           >
             <BiPlus className="text-[18px]" />
@@ -45,7 +45,7 @@ export default function ManageFacilitiesPage() {
         <StatsSummary />
 
         {/* Client island */}
-        <ManageFacilitiesClient />
+        <ManageFacilitiesClient DeleteFacility={DeleteFacility} />
       </div>
     </div>
   );
