@@ -169,7 +169,7 @@ export default function FacilityCard({
             </span>
           </div>
 
-          {/* ── Action area by variant ── */}
+          {/* ── Action area by variant ── facilities/manage-my-facilities*/}
 
           {/* featured / browse → single Book Now */}
           {(variant === "featured" || variant === "browse") && (
