@@ -1,5 +1,6 @@
 import { Card } from "@heroui/react";
 import BookingForm from "./BookingForm";
+import { AddBooking } from "@/lib/backend/Booking/bookingAction";
 
 export default function FacilityDetailsRight({ facility }) {
   return (
@@ -19,7 +20,7 @@ export default function FacilityDetailsRight({ facility }) {
         </div>
 
         {/* Client Side Booking Form */}
-        <BookingForm facility={facility} />
+        <BookingForm facility={facility} AddBooking={AddBooking} />
       </div>
     </Card>
   );

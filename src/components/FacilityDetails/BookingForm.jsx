@@ -5,11 +5,13 @@
 
 import { useForm, Controller } from "react-hook-form";
 import { FaCalendarAlt, FaClock, FaTicketAlt } from "react-icons/fa";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserInfoContext } from "@/context/UserInfoContext";
 
-export default function BookingForm({ facility }) {
+export default function BookingForm({ facility, AddBooking }) {
   const { name, price, slots = [] } = facility;
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(price);
+  const { userInfo, isPending } = useContext(UserInfoContext);
 
   const {
     control,
@@ -34,11 +36,45 @@ export default function BookingForm({ facility }) {
   };
 
   const onSubmit = (data) => {
+    //     {
+    //   facility_id: "facilityId",  ase
+    //   facility_name: "Urban Football Turf", ase
+    //   facility_image: "image-url",
+
+    //   user_email: "amir@gmail.com",
+
+    //   booking_date: "2026-05-18", ase
+    //   time_slot: "8AM-9AM", ase
+
+    //   hours: 2,ase
+
+    //   total_price: 2400, backend
+
+    //   status: "pending", backend
+
+    //   createdAt: new Date() backend
+    // }
     console.log({
       ...data,
       totalPrice,
       facilityId: facility._id || facility.id,
     });
+
+    //  take this data and send to backend API to create a booking record in the database
+    const bookingData = {
+      facilityId: facility._id || facility.id,
+      facilityName: name,
+      facilityImage: facility.imageUrl,
+      userEmail: userInfo.email,
+      bookingDate: data.bookingDate,
+      timeSlot: data.timeSlot,
+      hours: data.hours,
+      totalPrice,
+      status: "pending",
+      createdAt: new Date(),
+    };
+    AddBooking(bookingData);
+
     // No API call, just logging form data
   };
 
