@@ -71,7 +71,7 @@ export async function DeleteFacility(facilityId) {
 
 export async function UpdateFacility(id, formData) {
   "use server";
-  const UpdatedData = Object.fromEntries(formData.entries());
+  // const UpdatedData = Object.fromEntries(formData.entries());
 
   // console.log(UpdatedData);
 
@@ -80,7 +80,7 @@ export async function UpdateFacility(id, formData) {
     headers: {
       "Content-type": "application/json",
     },
-    body: JSON.stringify(UpdatedData),
+    body: JSON.stringify(formData),
   });
 
   const res = await req.json();

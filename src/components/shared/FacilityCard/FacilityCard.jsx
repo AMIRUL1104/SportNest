@@ -193,7 +193,7 @@ export default function FacilityCard({
           {variant === "manage" && (
             <div className="flex items-center gap-2">
               <Link
-                href={`/manage/facilities/${_id}/edit`}
+                href={`/facilities/${_id}/update-facility`}
                 className="
                   flex items-center gap-1 px-3 py-1.5 rounded-lg
                   border border-[rgba(144,171,139,0.45)] bg-transparent
