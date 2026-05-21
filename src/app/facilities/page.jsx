@@ -34,7 +34,7 @@ export default async function FacilitiesPage() {
         </div>
 
         {/* ── Client island: search + filter + grid ── */}
-        <FacilitiesClient facilities={facilities} />
+        <FacilitiesClient />
       </div>
     </div>
   );

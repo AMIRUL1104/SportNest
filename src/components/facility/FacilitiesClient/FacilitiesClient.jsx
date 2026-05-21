@@ -1,36 +1,147 @@
+// "use client";
+
+// import { useState, useMemo, useTransition } from "react";
+
+// import FacilityCard from "@/components/shared/FacilityCard/FacilityCard";
+// import SearchFilterBar from "@/components/shared/SearchFilterBar/SearchFilterBar";
+// import FacilitySkeleton from "@/components/shared/FacilitySkeleton/FacilitySkeleton";
+// import EmptyState from "@/components/shared/EmptyState/EmptyState";
+
+// /* ═══════════════════════════════════════════
+//    FACILITIES CLIENT  — Client Island
+//    All Facilities page
+// ═══════════════════════════════════════════ */
+// export default function FacilitiesClient({ facilities = [] }) {
+//   const [search, setSearch] = useState("");
+//   const [typeFilter, setType] = useState("");
+//   const [isPending, startTrans] = useTransition();
+
+//   const filtered = useMemo(() => {
+//     const q = search.trim().toLowerCase();
+//     return facilities.filter((f) => {
+//       const matchName = !q || f.name.toLowerCase().includes(q);
+//       const matchType = !typeFilter || f.type === typeFilter;
+//       return matchName && matchType;
+//     });
+//   }, [facilities, search, typeFilter]);
+
+//   const hasFilters = search.trim() !== "" || typeFilter !== "";
+
+//   const handleSetType = (val) => startTrans(() => setType(val));
+
+//   const clearFilters = () => {
+//     startTrans(() => {
+//       setSearch("");
+//       setType("");
+//     });
+//   };
+
+//   return (
+//     <div className="flex flex-col gap-6">
+//       {/* search + filter */}
+//       <SearchFilterBar
+//         search={search}
+//         setSearch={setSearch}
+//         typeFilter={typeFilter}
+//         setTypeFilter={handleSetType}
+//         placeholder="Search by facility name…"
+//       />
+
+//       {/* result summary */}
+//       <div className="flex items-center px-0.5">
+//         <p className="text-[13px] text-[rgba(59,73,83,0.55)]">
+//           {isPending ? (
+//             <span className="inline-flex items-center gap-2">
+//               <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-[#90AB8B] border-t-transparent" />
+//               Filtering…
+//             </span>
+//           ) : (
+//             <>
+//               Showing{" "}
+//               <span className="font-semibold text-[#3B4953]">
+//                 {filtered.length}
+//               </span>{" "}
+//               of{" "}
+//               <span className="font-semibold text-[#3B4953]">
+//                 {facilities.length}
+//               </span>{" "}
+//               facilit{facilities.length === 1 ? "y" : "ies"}
+//               {hasFilters && (
+//                 <span className="ml-1 text-[#5A7863]">· filtered</span>
+//               )}
+//             </>
+//           )}
+//         </p>
+//       </div>
+
+//       {/* grid / skeleton / empty */}
+//       {isPending ? (
+//         <FacilitySkeleton variant="browse" count={6} />
+//       ) : filtered.length > 0 ? (
+//         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+//           {filtered.map((facility) => (
+//             <FacilityCard
+//               key={facility._id ?? facility.id}
+//               facility={facility}
+//               variant="browse"
+//             />
+//           ))}
+//         </div>
+//       ) : (
+//         <EmptyState
+//           variant="browse"
+//           hasFilters={hasFilters}
+//           onClear={clearFilters}
+//         />
+//       )}
+//     </div>
+//   );
+// }
+
 "use client";
 
-import { useState, useMemo, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 
 import FacilityCard from "@/components/shared/FacilityCard/FacilityCard";
 import SearchFilterBar from "@/components/shared/SearchFilterBar/SearchFilterBar";
 import FacilitySkeleton from "@/components/shared/FacilitySkeleton/FacilitySkeleton";
 import EmptyState from "@/components/shared/EmptyState/EmptyState";
+import getFacilities from "@/lib/backend/facilities/data";
+// import getFacilities from "@/services/getFacilities";
 
 /* ═══════════════════════════════════════════
-   FACILITIES CLIENT  — Client Island
-   All Facilities page
+   FACILITIES CLIENT — Client Island
 ═══════════════════════════════════════════ */
-export default function FacilitiesClient({ facilities = [] }) {
+export default function FacilitiesClient() {
+  const [facilities, setFacilities] = useState([]);
+
   const [search, setSearch] = useState("");
   const [typeFilter, setType] = useState("");
-  const [isPending, startTrans] = useTransition();
+  const [isPending, startTransition] = useTransition();
 
-  const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
-    return facilities.filter((f) => {
-      const matchName = !q || f.name.toLowerCase().includes(q);
-      const matchType = !typeFilter || f.type === typeFilter;
-      return matchName && matchType;
-    });
-  }, [facilities, search, typeFilter]);
+  // backend search + filter
+  useEffect(() => {
+    const loadFacilities = async () => {
+      startTransition(async () => {
+        const data = await getFacilities("", search, typeFilter);
+
+        setFacilities(data);
+      });
+    };
+
+    loadFacilities();
+  }, [search, typeFilter]);
 
   const hasFilters = search.trim() !== "" || typeFilter !== "";
 
-  const handleSetType = (val) => startTrans(() => setType(val));
+  const handleSetType = (val) => {
+    startTransition(() => {
+      setType(val);
+    });
+  };
 
   const clearFilters = () => {
-    startTrans(() => {
+    startTransition(() => {
       setSearch("");
       setType("");
     });
@@ -59,13 +170,10 @@ export default function FacilitiesClient({ facilities = [] }) {
             <>
               Showing{" "}
               <span className="font-semibold text-[#3B4953]">
-                {filtered.length}
-              </span>{" "}
-              of{" "}
-              <span className="font-semibold text-[#3B4953]">
                 {facilities.length}
               </span>{" "}
-              facilit{facilities.length === 1 ? "y" : "ies"}
+              facilit
+              {facilities.length === 1 ? "y" : "ies"}
               {hasFilters && (
                 <span className="ml-1 text-[#5A7863]">· filtered</span>
               )}
@@ -77,9 +185,9 @@ export default function FacilitiesClient({ facilities = [] }) {
       {/* grid / skeleton / empty */}
       {isPending ? (
         <FacilitySkeleton variant="browse" count={6} />
-      ) : filtered.length > 0 ? (
+      ) : facilities.length > 0 ? (
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((facility) => (
+          {facilities.map((facility) => (
             <FacilityCard
               key={facility._id ?? facility.id}
               facility={facility}

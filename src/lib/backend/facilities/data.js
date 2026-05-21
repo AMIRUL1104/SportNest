@@ -1,27 +1,40 @@
-export default async function getFacilities(email = "") {
+export default async function getFacilities(
+  email = "",
+  search = "",
+  type = "",
+) {
   try {
-    // যদি email থাকে তবে '?email=...' যোগ হবে, না থাকলে খালি থাকবে
-    const url = email
-      ? `http://localhost:4000/facilities?email=${email}`
-      : "http://localhost:4000/facilities";
+    const params = new URLSearchParams();
+
+    if (email) {
+      params.append("email", email);
+    }
+
+    if (search) {
+      params.append("search", search);
+    }
+
+    if (type) {
+      params.append("type", type);
+    }
+
+    const url = `http://localhost:4000/facilities?${params.toString()}`;
 
     const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
-      next: { revalidate: 0 }, // অথবা cache: "no-store" (নতুন ডাটা ইনস্ট্যান্ট পাওয়ার জন্য)
+      next: { revalidate: 0 },
     });
 
     if (!response.ok) {
-      console.error("Failed to fetch facilities:", response.statusText);
-      return []; // এরর হলে খালি অ্যারে রিটার্ন করা নিরাপদ, যাতে .map() ক্র্যাশ না করে
+      return [];
     }
 
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
-    console.error("Fetch error:", error);
+    console.error(error);
     return [];
   }
 }
