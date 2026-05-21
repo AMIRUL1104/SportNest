@@ -11,12 +11,16 @@ import LogoMark from "@/components/ui/LogoMark";
 import { Bounce, toast } from "react-toastify";
 import { authClient } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 /* ═══════════════════════════════════════
    LOGIN PAGE
 ═══════════════════════════════════════ */
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   const {
     register,
@@ -24,12 +28,12 @@ export default function LoginPage() {
     formState: { errors, isSubmitting },
   } = useForm({ mode: "onTouched" });
 
-  /* placeholder — wire up your auth logic here */
   const onSubmit = async (userData) => {
     const { email, password } = userData;
+
     const { data, error } = await authClient.signIn.email({
-      email: email, // required
-      password: password, // required
+      email,
+      password,
       rememberMe: true,
     });
 
@@ -40,20 +44,11 @@ export default function LoginPage() {
 
     if (data) {
       toast.success(
-        `Welcome Back, ${data.user.name}. Your Are SignIn Successfully!`,
-        {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: false,
-          progress: undefined,
-          theme: "light",
-          transition: Bounce,
-        },
+        `Welcome Back, ${data.user.name}. You Are SignIn Successfully!`,
       );
-      redirect("/");
+
+      router.push(callbackUrl);
+
       return;
     }
   };

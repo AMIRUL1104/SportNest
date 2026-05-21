@@ -18,7 +18,6 @@ export default function BookingCard({ booking, index }) {
     totalPrice,
     status,
   } = booking;
-  console.log(booking);
 
   return (
     <div

@@ -1,11 +1,12 @@
-// app/my-bookings/page.jsx
-// Server Component
+
 
 import BookingList from "@/components/booking/Bookinglist";
 import { auth } from "@/lib/auth";
 import { getMyBookings } from "@/lib/backend/Booking/bookingData";
 
 import { headers } from "next/headers";
+import Link from "next/link";
+import { IoLogInOutline } from "react-icons/io5";
 
 export const metadata = {
   title: "My Bookings",
@@ -21,11 +22,24 @@ export default async function MyBookingsPage() {
 
   if (!userEmail) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
+      <div className="flex flex-col items-center justify-center space-y-5 min-h-screen">
         <h1 className="text-2xl font-bold">Unauthorized</h1>
         <p className="text-muted-foreground">
           You must be logged in to view your bookings.
         </p>
+        <Link
+          href="/signin"
+          className="
+                                    flex items-center gap-1.5 px-4 py-1.75 rounded-lg no-underline
+                                    bg-[#5A7863] hover:bg-[#4d6b56] text-[#EBF4DD]
+                                    text-[13px] font-medium tracking-wide
+                                    shadow-[0_2px_8px_rgba(90,120,99,0.25)]
+                                    transition-colors duration-200
+                                  "
+        >
+          <IoLogInOutline className="text-base" />
+          <span>Sign In</span>
+        </Link>
       </div>
     );
   }

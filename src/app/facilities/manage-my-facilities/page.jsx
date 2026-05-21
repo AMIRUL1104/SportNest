@@ -4,13 +4,46 @@ import ManageFacilitiesClient from "@/components/facility/ManageFacility/ManageF
 
 import StatsSummary from "@/components/facility/ManageFacility/StatsSummary";
 import { DeleteFacility } from "@/lib/backend/facilities/action";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { IoLogInOutline } from "react-icons/io5";
 
 export const metadata = {
   title: "Manage Facilities — SportNest",
   description: "Manage, update or remove your sports facilities.",
 };
 
-export default function ManageFacilitiesPage() {
+export default async function ManageFacilitiesPage() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  const userInfo = session?.user;
+  const userEmail = userInfo?.email;
+
+  if (!userEmail) {
+    return (
+      <div className="flex flex-col items-center justify-center space-y-5 min-h-screen">
+        <h1 className="text-2xl font-bold">Unauthorized</h1>
+        <p className="text-muted-foreground">
+          You must be logged in to view your bookings.
+        </p>
+        <Link
+          href="/signin"
+          className="
+                            flex items-center gap-1.5 px-4 py-1.75 rounded-lg no-underline
+                            bg-[#5A7863] hover:bg-[#4d6b56] text-[#EBF4DD]
+                            text-[13px] font-medium tracking-wide
+                            shadow-[0_2px_8px_rgba(90,120,99,0.25)]
+                            transition-colors duration-200
+                          "
+        >
+          <IoLogInOutline className="text-base" />
+          <span>Sign In</span>
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#EBF4DD]">
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
@@ -45,7 +78,10 @@ export default function ManageFacilitiesPage() {
         <StatsSummary />
 
         {/* Client island */}
-        <ManageFacilitiesClient DeleteFacility={DeleteFacility} />
+        <ManageFacilitiesClient
+          DeleteFacility={DeleteFacility}
+          userEmail={userEmail}
+        />
       </div>
     </div>
   );

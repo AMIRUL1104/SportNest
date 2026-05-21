@@ -1,21 +1,21 @@
 "use client";
 
 import SearchFilterBar from "@/components/shared/SearchFilterBar/SearchFilterBar";
-import { useContext, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import ClientMainPart from "./ClientMainPart";
-import { UserInfoContext } from "@/context/UserInfoContext";
+// import { UserInfoContext } from "@/context/UserInfoContext";
 
 /* ═══════════════════════════════════════════
    MANAGE FACILITIES CLIENT  — Client Island
    Manage Facilities page
 ═══════════════════════════════════════════ */
-export default function ManageFacilitiesClient({ DeleteFacility }) {
-  const { userInfo } = useContext(UserInfoContext);
+export default function ManageFacilitiesClient({ DeleteFacility, userEmail }) {
+  // const { userInfo } = useContext(UserInfoContext);
   const [search, setSearch] = useState("");
   const [typeFilter, setType] = useState("");
   const [isPending, startTrans] = useTransition();
 
-  const ownerEmail = userInfo.email;
+  const ownerEmail = userEmail;
 
   const handleSetType = (val) => startTrans(() => setType(val));
 
