@@ -19,7 +19,6 @@ function ClientMainPart({
   const [facilities, setFacilities] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // ১. ক্লায়েন্ট কম্পোনেন্টে ডাটা আনার সঠিক নিয়ম
   useEffect(() => {
     if (ownerEmail) {
       setLoading(true);
