@@ -6,13 +6,16 @@ export async function AddBooking(formData) {
   let result;
 
   try {
-    const response = await fetch("http://localhost:4000/bookings", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SPORTNEST_DATA_API}/bookings`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       },
-      body: JSON.stringify(formData),
-    });
+    );
 
     result = await response.json();
   } catch (error) {
@@ -35,12 +38,15 @@ export async function DeleteBooking(bookingId) {
       return { error: "Booking ID is required", deletedCount: 0 };
     }
 
-    const res = await fetch(`http://localhost:4000/bookings/${bookingId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SPORTNEST_DATA_API}/bookings/${bookingId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
       },
-    });
+    );
 
     if (!res.ok) {
       return {

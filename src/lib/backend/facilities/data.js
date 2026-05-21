@@ -18,7 +18,7 @@ export default async function getFacilities(
       params.append("type", type);
     }
 
-    const url = `http://localhost:4000/facilities?${params.toString()}`;
+    const url = `${process.env.NEXT_PUBLIC_SPORTNEST_DATA_API}/facilities?${params.toString()}`;
 
     const response = await fetch(url, {
       method: "GET",
@@ -40,14 +40,18 @@ export default async function getFacilities(
 }
 
 export async function getFacilityById(id) {
-  const req = await fetch(`http://localhost:4000/facilities/${id}`);
+  const req = await fetch(
+    `${process.env.NEXT_PUBLIC_SPORTNEST_DATA_API}/facilities/${id}`,
+  );
   const res = await req.json();
   return res;
 }
 
 export async function getLimitedFacilities() {
   try {
-    const response = await fetch("http://localhost:4000/facilities/limited");
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SPORTNEST_DATA_API}/facilities/limited`,
+    );
 
     // রেসপন্স ঠিকঠাক না থাকলে এরর থ্রো করবে
     if (!response.ok) {

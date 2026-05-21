@@ -8,13 +8,16 @@ export async function AddFacility(formData) {
   let result;
 
   try {
-    const response = await fetch("http://localhost:4000/facilities", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SPORTNEST_DATA_API}/facilities`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       },
-      body: JSON.stringify(formData),
-    });
+    );
 
     result = await response.json();
   } catch (error) {
@@ -37,12 +40,15 @@ export async function DeleteFacility(facilityId) {
       return { error: "Facility ID is required", deletedCount: 0 };
     }
 
-    const res = await fetch(`http://localhost:4000/facilities/${facilityId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SPORTNEST_DATA_API}/facilities/${facilityId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
       },
-    });
+    );
 
     if (!res.ok) {
       return {
@@ -55,7 +61,7 @@ export async function DeleteFacility(facilityId) {
     console.log(result);
 
     if (result.deletedCount > 0) {
-      revalidatePath("/facilities/manage-my-facilities");
+      revalidatePath(`/facilities/manage-my-facilities`);
       // toast("Facility deleted successfully!");
     }
 
@@ -75,13 +81,16 @@ export async function UpdateFacility(id, formData) {
 
   // console.log(UpdatedData);
 
-  const req = await fetch(`http://localhost:4000/facilities/${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-type": "application/json",
+  const req = await fetch(
+    `${process.env.NEXT_PUBLIC_SPORTNEST_DATA_API}/facilities/${id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(formData),
     },
-    body: JSON.stringify(formData),
-  });
+  );
 
   const res = await req.json();
   // console.log("after update ", res);

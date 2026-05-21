@@ -2,7 +2,7 @@ export async function getMyBookings(userEmail) {
   // Implementation for fetching user's bookings
   try {
     // যদি email থাকে তবে '?email=...' যোগ হবে, না থাকলে খালি থাকবে
-    const url = `http://localhost:4000/bookings?userEmail=${userEmail}`;
+    const url = `${process.env.NEXT_PUBLIC_SPORTNEST_DATA_API}/bookings?userEmail=${userEmail}`;
 
     const response = await fetch(url, {
       method: "GET",
