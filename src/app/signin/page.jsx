@@ -48,8 +48,6 @@ export default function LoginPage() {
         `Welcome Back, ${data.user.name}. You Are SignIn Successfully!`,
       );
 
-
-
       return;
     }
   };
