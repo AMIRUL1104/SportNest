@@ -56,6 +56,7 @@ export default function LoginPage() {
   const handleGoogleLogin = async () => {
     const data = await authClient.signIn.social({
       provider: "google",
+       callbackURL: callbackUrl,
     });
     if (data) {
       toast.success(
