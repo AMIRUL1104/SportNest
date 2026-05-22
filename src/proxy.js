@@ -6,7 +6,7 @@ export const config = {
   matcher: [
     "/profile",
     "/my-bookings",
-    "/facilities/:path*",
+    "/facilities/:id",
     "/facilities/:id/update-facility",
   ],
 };

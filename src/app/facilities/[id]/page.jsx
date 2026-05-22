@@ -3,34 +3,10 @@ import FacilityDetailsRight from "@/components/FacilityDetails/FacilityDetailsRi
 import { getFacilityById } from "@/lib/backend/facilities/data";
 import { notFound } from "next/navigation";
 
-// ডামি ডাটা ফেচিং ফাংশন (তোমার রিয়েল ডাটাবেজ ফাংশন দিয়ে রিপ্লেস করবে)
-// async function getFacilityData(id) {
-//   // উদাহরণস্বরূপ ডামি ডাটা
-//   const facilities = {
-//     1: {
-//       id: "1",
-//       name: "Elite Turf & Indoor Arena",
-//       type: "Football",
-//       location: "Dhanmondi, Dhaka",
-//       capacity: "14 Players",
-//       pricePerHour: 1500,
-//       ownerEmail: "owner@sportnest.com",
-//       image:
-//         "https://images.unsplash.com/photo-1575361204480-aadea25e6e68?q=80&w=600",
-//       description:
-//         "Premium quality artificial turf perfect for 5-a-side and 7-a-side football matches. Features high-intensity LED lighting, comfortable dugout zones, and complimentary mineral water.",
-//       slots: ["8AM–9AM", "9AM–10AM", "10AM–11AM", "4PM–5PM", "5PM–6PM"],
-//     },
-//   };
-//   return facilities[id] || null;
-// }
-
 export default async function FacilityDetailsPage({ params }) {
   const { id } = await params;
-  console.log(id);
 
   const facility = await getFacilityById(id);
-  console.log(facility);
 
   if (!facility) {
     notFound();

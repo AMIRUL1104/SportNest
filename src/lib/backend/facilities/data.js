@@ -25,7 +25,8 @@ export default async function getFacilities(
       headers: {
         "Content-Type": "application/json",
       },
-      next: { revalidate: 0 },
+      // next: { revalidate: 0 },
+      cache: "no-store",
     });
 
     if (!response.ok) {

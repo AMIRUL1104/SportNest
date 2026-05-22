@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import FacilitiesClient from "@/components/facility/FacilitiesClient/FacilitiesClient";
 import getFacilities from "@/lib/backend/facilities/data";
 
