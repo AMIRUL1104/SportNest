@@ -38,3 +38,5 @@ export async function proxy(request) {
     return NextResponse.redirect(fallbackUrl);
   }
 }
+
+

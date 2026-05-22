@@ -43,11 +43,12 @@ export default function LoginPage() {
     }
 
     if (data) {
+      router.push(callbackUrl);
       toast.success(
         `Welcome Back, ${data.user.name}. You Are SignIn Successfully!`,
       );
 
-      router.push(callbackUrl);
+
 
       return;
     }
