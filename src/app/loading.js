@@ -1,12 +1,9 @@
-import { Spinner } from "@heroui/react";
-
-function loading() {
+function Loading() {
   return (
-    <div className="flex flex-col items-center my-10 h-full ">
-      <Spinner size="xl" />
-      {/* <span className="text-xs text-muted">Extra Large</span> */}
+    <div className="py-20 flex items-center justify-center">
+      <div className="h-9 w-9 animate-spin rounded-full border-4 border-border border-t-primary" />
     </div>
   );
 }
 
-export default loading;
+export default Loading;
