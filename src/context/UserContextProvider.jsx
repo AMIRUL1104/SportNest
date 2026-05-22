@@ -5,7 +5,7 @@ import { UserInfoContext } from "./UserInfoContext";
 function UserContextProvider({ children }) {
   // login sesion  info
   const { data: session, isPending } = authClient.useSession();
-  const userInfo = session?.user;
+  const userInfo = session?.user || null;
 
   const userData = { userInfo, isPending };
 
