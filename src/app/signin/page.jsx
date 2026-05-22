@@ -47,6 +47,9 @@ export default function LoginPage() {
         `Welcome Back, ${data.user.name}. You Are SignIn Successfully!`,
       );
       //  router.push(callbackUrl);
+      // ✅ CRITICAL FIX: Wait a small delay to allow session listeners to update
+      // This ensures the session is synced across all components before redirect
+      await new Promise((resolve) => setTimeout(resolve, 500));
       await authClient.getSession?.();
 
       router.replace(callbackUrl || "/");
@@ -72,7 +75,6 @@ export default function LoginPage() {
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-[rgba(144,171,139,0.25)] shadow-[0_8px_40px_rgba(59,73,83,0.1)]">
           {/* ── card header ── */}
           <div className="px-8 pt-8 pb-6 border-b border-[rgba(144,171,139,0.15)]">
-            {/* logo */}
             <LogoMark />
 
             <h1 className="text-[22px] font-semibold text-[#3B4953] tracking-tight leading-snug">
