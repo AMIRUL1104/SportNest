@@ -54,13 +54,10 @@ export default function LoginPage() {
   };
 
   const handleGoogleLogin = async () => {
-    // e.g. await authClient.signIn.social({ provider: "google" })
     const data = await authClient.signIn.social({
       provider: "google",
     });
-    // console.log(" DATA", data);
     if (data) {
-      router.push(callbackUrl);
       toast.success(
         `Welcome Back, ${data.user.name}. You Are SignIn Successfully!`,
       );
