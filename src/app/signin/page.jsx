@@ -35,6 +35,7 @@ export default function LoginPage() {
       email,
       password,
       rememberMe: true,
+      callbackURL: callbackUrl,
     });
 
     if (error) {
@@ -43,16 +44,15 @@ export default function LoginPage() {
     }
 
     if (data) {
+      router.push(callbackUrl);
       toast.success(
         `Welcome Back, ${data.user.name}. You Are SignIn Successfully!`,
       );
-      //  router.push(callbackUrl);
-      // ✅ CRITICAL FIX: Wait a small delay to allow session listeners to update
       // This ensures the session is synced across all components before redirect
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      await authClient.getSession?.();
+      // await new Promise((resolve) => setTimeout(resolve, 500));
+      // await authClient.getSession?.();
 
-      router.replace(callbackUrl || "/");
+      // router.replace(callbackUrl || "/");
       return;
     }
   };

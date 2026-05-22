@@ -21,9 +21,9 @@ export async function proxy(request) {
 
     // 🔐 Not authenticated → redirect to signin
     if (!session) {
-      const loginUrl = new URL("/signin", origin);
+      const loginUrl = new URL("/signin", request.url);
 
-      loginUrl.searchParams.set("callbackUrl", href);
+      loginUrl.searchParams.set("callbackUrl", request.url);
 
       return NextResponse.redirect(loginUrl);
     }
@@ -34,9 +34,7 @@ export async function proxy(request) {
     // 🧯 Safety fallback (avoid breaking app)
     console.error("Middleware auth error:", error);
 
-    const fallbackUrl = new URL("/signin", origin);
+    const fallbackUrl = new URL("/signin", request.url);
     return NextResponse.redirect(fallbackUrl);
   }
 }
-
-
