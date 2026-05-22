@@ -1,29 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { redirect, usePathname } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
-import {
-  BiUserCircle,
-  BiHome,
-  BiBuildings,
-  BiCalendarCheck,
-  BiCog,
-  BiGrid,
-} from "react-icons/bi";
+import { usePathname } from "next/navigation";
+import { useContext, useEffect, useRef, useState } from "react";
+import { BiHome, BiCalendarCheck, BiCog, BiGrid } from "react-icons/bi";
 import { IoLogInOutline } from "react-icons/io5";
 import LogoMark from "../../ui/LogoMark";
 import MobileNav from "./MobileNav";
-import { authClient } from "@/lib/auth-client";
-import { Bounce, toast } from "react-toastify";
-import { UserInfoContext } from "@/context/UserInfoContext";
-// import {  } from "react-icons/lu";
 
-/* ─── auth hook placeholder ─── */
-// const useMockAuth = () => ({
-//   isPending: false,
-//   userInfo: null,
-// });
+import { UserInfoContext } from "@/context/UserInfoContext";
+import ProfileDropdown from "./ProfileDropdown";
 
 const mainLinks = [
   { href: "/", label: "Home", icon: BiHome },
@@ -36,11 +22,10 @@ const mainLinks = [
   },
 ];
 
-/* ─── Spinner ─── */
 function Spinner() {
-  // return <LuLoader2 className="animate-spin text-[#90AB8B] text-lg" />;
-
-  <div className="animate-spin text-[#90AB8B] text-lg">Loading...</div>;
+  return (
+    <div className="h-4 w-4 animate-spin rounded-full border-2 border-[#90AB8B] border-t-transparent" />
+  );
 }
 
 /* ═══════════════════════════════════════
@@ -48,13 +33,10 @@ function Spinner() {
 ═══════════════════════════════════════ */
 export default function Navbar() {
   const pathname = usePathname();
-  const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-
   const { userInfo, isPending } = useContext(UserInfoContext);
 
   useEffect(() => {
-    // setMounted(true);
     const onScroll = () => setScrolled(window.scrollY > 25);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -64,16 +46,12 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ════════ DESKTOP / TABLET HEADER ════════ */}
       <header
         className={[
-          /* position & stack */
           "sticky top-0 left-0 right-0 z-50",
-          /* glassmorphism */
           "bg-[rgba(59,73,83,0.72)] backdrop-blur-xl saturate-150",
           "border-b border-[rgba(144,171,139,0.18)]",
           "shadow-[0_4px_24px_rgba(59,73,83,0.18)]",
-          /* scroll-hide */
           "transition-[transform,opacity] duration-300 ease-in-out",
           scrolled
             ? "-translate-y-full opacity-0"
@@ -82,16 +60,41 @@ export default function Navbar() {
       >
         <div className="max-w-350 mx-auto px-5">
           <div className="flex items-center justify-between h-16">
-            {/* ── Logo: centred on mobile, left on lg ── */}
-            <Link
-              href="/"
-              className="absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0 no-underline"
-            >
-              <LogoMark />
-            </Link>
+            {/* ── LEFT: Logo + Auth (tablet) ── */}
+            <div className="flex items-center gap-4">
+              {/* Logo: centered on mobile, left on sm+ */}
+              <Link
+                href="/"
+                className="absolute left-1/2 -translate-x-1/2 sm:static sm:translate-x-0 no-underline"
+              >
+                <LogoMark />
+              </Link>
 
-            {/* ── Desktop nav (hidden below lg) ── */}
-            <nav className="hidden lg:flex items-center gap-0.5">
+              {/* Auth area — visible on sm→lg (tablet), hidden on lg+ (moved to right) */}
+              <div className="hidden sm:flex lg:hidden items-center gap-3">
+                {isPending ? (
+                  <div className="flex items-center gap-2">
+                    <Spinner />
+                    <span className="text-[13px] font-medium text-[#90AB8B]">
+                      Loading…
+                    </span>
+                  </div>
+                ) : userInfo ? (
+                  <ProfileDropdown />
+                ) : (
+                  <Link
+                    href="/signin"
+                    className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg no-underline bg-[#5A7863] hover:bg-[#4d6b56] text-[#EBF4DD] text-[13px] font-medium tracking-wide shadow-[0_2px_8px_rgba(90,120,99,0.25)] transition-colors duration-200"
+                  >
+                    <IoLogInOutline className="text-base" />
+                    <span>Sign In</span>
+                  </Link>
+                )}
+              </div>
+            </div>
+
+            {/* ── CENTER/RIGHT: Nav links — hidden on mobile, visible sm+ ── */}
+            <nav className="hidden sm:flex items-center gap-0.5">
               {mainLinks.map(({ href, label, icon: Icon }) => {
                 const active = isActive(href);
                 return (
@@ -109,8 +112,6 @@ export default function Navbar() {
                   >
                     <Icon className="text-base shrink-0" />
                     <span>{label}</span>
-
-                    {/* active underline */}
                     <span
                       className={[
                         "absolute bottom-1 left-3.5 right-3.5 h-px rounded-full",
@@ -123,8 +124,8 @@ export default function Navbar() {
               })}
             </nav>
 
-            {/* ── Auth area (hidden on xs, visible sm+) ── */}
-            <div className="hidden sm:flex items-center gap-3">
+            {/* ── RIGHT: Auth — desktop only (lg+) ── */}
+            <div className="hidden lg:flex items-center gap-3">
               {isPending ? (
                 <div className="flex items-center gap-2">
                   <Spinner />
@@ -133,52 +134,11 @@ export default function Navbar() {
                   </span>
                 </div>
               ) : userInfo ? (
-                /* ── Logged-in state ── */
-                <div className="flex items-center gap-2.5">
-                  <Link
-                    href="/profile"
-                    className="text-[rgba(235,244,221,0.85)] hover:text-[#EBF4DD] transition-colors duration-200"
-                  >
-                    <BiUserCircle className="text-[26px]" />
-                  </Link>
-
-                  <button
-                    onClick={async () => {
-                      await authClient.signOut();
-                      toast.success("SignOut Successfully", {
-                        position: "top-right",
-                        autoClose: 3000,
-                        hideProgressBar: true,
-                        closeOnClick: true,
-                        pauseOnHover: false,
-                        draggable: true,
-                        progress: undefined,
-                        theme: "light",
-                        transition: Bounce,
-                      });
-                      redirect("/");
-                    }}
-                    className="
-                      px-3.5 py-1.5 rounded-[7px] text-[13px] font-medium tracking-wide
-                      border border-[rgba(239,68,68,0.45)] text-[#fca5a5] bg-transparent
-                      hover:bg-[rgba(239,68,68,0.12)] hover:border-[rgba(239,68,68,0.7)]
-                      transition-all duration-200 cursor-pointer
-                    "
-                  >
-                    Sign out
-                  </button>
-                </div>
+                <ProfileDropdown />
               ) : (
-                /* ── Logged-out state ── */
                 <Link
                   href="/signin"
-                  className="
-                    flex items-center gap-1.5 px-4 py-1.75 rounded-lg no-underline
-                    bg-[#5A7863] hover:bg-[#4d6b56] text-[#EBF4DD]
-                    text-[13px] font-medium tracking-wide
-                    shadow-[0_2px_8px_rgba(90,120,99,0.25)]
-                    transition-colors duration-200
-                  "
+                  className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg no-underline bg-[#5A7863] hover:bg-[#4d6b56] text-[#EBF4DD] text-[13px] font-medium tracking-wide shadow-[0_2px_8px_rgba(90,120,99,0.25)] transition-colors duration-200"
                 >
                   <IoLogInOutline className="text-base" />
                   <span>Sign In</span>
@@ -189,7 +149,7 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* ════════ MOBILE BOTTOM NAV ════════ */}
+      {/* Mobile Bottom Nav */}
       <MobileNav pathname={pathname} userInfo={userInfo} />
     </>
   );

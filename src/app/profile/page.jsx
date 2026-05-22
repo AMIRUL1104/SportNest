@@ -23,7 +23,7 @@ export default async function ProfilePage() {
   };
 
   return (
-    <main className="min-h-screen bg-muted/30 py-8 px-4 sm:px-6 lg:px-8 animate__animated animate__fadeIn">
+    <main className="min-h-screen bg-[#EBF4DD] py-8 px-4 sm:px-6 lg:px-8 animate__animated animate__fadeIn">
       <div className="mx-auto max-w-3xl flex flex-col gap-5">
         <ProfileHeader user={user} />
 
