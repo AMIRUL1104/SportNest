@@ -4,6 +4,7 @@
 import ProfileHeader from "@/components/userProfile/Profileheader";
 import ProfileInfoCard from "@/components/userProfile/Profileinfocard";
 import ProfileQuickActions from "@/components/userProfile/Profilequickactions";
+import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
 export const metadata = { title: "My Profile | SportNest" };
