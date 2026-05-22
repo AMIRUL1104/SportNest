@@ -15,29 +15,6 @@ function LivePreview() {
         </h3>
       </div>
 
-      {/* image thumb */}
-      {/* <div className="h-36 bg-[rgba(235,244,221,0.5)] relative overflow-hidden">
-                  {imagePreview ? (
-                    <Image
-                      src={imagePreview}
-                      alt="preview"
-                      className="w-full h-full object-cover"
-                      onError={() => {}}
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <BiImage className="text-[36px] text-[rgba(144,171,139,0.4)]" />
-                    </div>
-                  )}
-  
-                 
-                  {previewType && previewType !== "Type" && (
-                    <span className="absolute top-2 left-2 text-[10.5px] px-2.5 py-1 rounded-full bg-[#3B4953]/80 text-[#EBF4DD] font-medium backdrop-blur-sm">
-                      {previewType}
-                    </span>
-                  )}
-                </div> */}
-
       <div className="px-5 py-4 flex flex-col gap-2">
         <h4 className="text-[14px] font-semibold text-[#3B4953] leading-snug">
           {previewName}

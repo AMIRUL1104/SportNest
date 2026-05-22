@@ -11,7 +11,6 @@ export default async function StatCard({
     (sum, f) => sum + (f.bookingCount ?? 0),
     0,
   );
-  // console.log(userInfo);
 
   const value = facilities.length;
   return (

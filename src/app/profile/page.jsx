@@ -14,10 +14,9 @@ export default async function ProfilePage() {
     headers: await headers(),
   });
 
-  // Mock data — replace with real session fields as needed
   const user = {
-    name: session?.user?.name || "SportNest User",
-    email: session?.user?.email || "user@sportnest.com",
+    name: session?.user?.name || null,
+    email: session?.user?.email || null,
     image: session?.user?.image || null,
     createdAt: session?.user?.createdAt || null,
   };

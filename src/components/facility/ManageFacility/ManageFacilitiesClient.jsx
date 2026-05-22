@@ -3,7 +3,6 @@
 import SearchFilterBar from "@/components/shared/SearchFilterBar/SearchFilterBar";
 import { useState, useTransition } from "react";
 import ClientMainPart from "./ClientMainPart";
-// import { UserInfoContext } from "@/context/UserInfoContext";
 
 /* ═══════════════════════════════════════════
    MANAGE FACILITIES CLIENT  — Client Island

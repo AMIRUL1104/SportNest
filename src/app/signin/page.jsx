@@ -48,11 +48,7 @@ export default function LoginPage() {
       toast.success(
         `Welcome Back, ${data.user.name}. You Are SignIn Successfully!`,
       );
-      // This ensures the session is synced across all components before redirect
-      // await new Promise((resolve) => setTimeout(resolve, 500));
-      // await authClient.getSession?.();
 
-      // router.replace(callbackUrl || "/");
       return;
     }
   };

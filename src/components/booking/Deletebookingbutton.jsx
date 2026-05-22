@@ -15,7 +15,6 @@ export default function DeleteBookingButton({ bookingId, DeleteBooking }) {
   };
 
   const handleConfirmDelete = () => {
-    // console.log("Delete booking:", bookingId);
     DeleteBooking(bookingId);
     setShowModal(false);
   };

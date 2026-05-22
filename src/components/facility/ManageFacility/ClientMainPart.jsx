@@ -32,9 +32,8 @@ function ClientMainPart({
           setLoading(false);
         });
     }
-  }, [ownerEmail]); // ওনার ইমেইল চেঞ্জ হলে বা প্রথমবার পেজ লোড হলে শুধু একবার রান হবে
+  }, [ownerEmail]);
 
-  // ২. ফিল্টারিং লজিক (ফাংশন না বানিয়ে সরাসরি ভ্যারিয়েবল করা হয়েছে)
   const q = search.trim().toLowerCase();
   const filteredFacilities = facilities.filter((f) => {
     const matchName = !q || f.name.toLowerCase().includes(q);
@@ -51,9 +50,6 @@ function ClientMainPart({
     });
   };
 
-  /* wire up your delete logic here */
-
-  // ডাটা লোড হওয়ার সময় স্কেলিটন দেখাবে
   if (loading) {
     return <FacilitySkeleton variant="manage" count={6} />;
   }

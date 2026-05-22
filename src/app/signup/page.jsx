@@ -59,7 +59,6 @@ export default function RegisterPage() {
   };
 
   const handleGoogleLogin = async () => {
-    // e.g. await authClient.signIn.social({ provider: "google" })
     console.log("google sign-in");
   };
 

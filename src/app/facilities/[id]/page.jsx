@@ -14,11 +14,6 @@ export default async function FacilityDetailsPage({ params }) {
 
   return (
     <div className="min-h-screen bg-slate-50/50 py-6 md:py-12 px-4 max-w-7xl mx-auto animate__animated animate__fadeIn">
-      {/* 
-        Flex Layout Configuration:
-        Mobile: flex-col-reverse (Right component rendering first on top)
-        Desktop: md:flex-row (Left | Right)
-      */}
       <div className="flex flex-col-reverse md:flex-row gap-6 lg:gap-10 items-start">
         {/* Left Side: 65% width on desktop */}
         <div className="w-full md:w-[65%]">
